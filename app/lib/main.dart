@@ -1,23 +1,10 @@
 import 'package:flutter/material.dart';
+
+import './message.dart';
 import './webview.dart';
 
 void main() {
   runApp(const MyApp());
-}
-
-// @todo Convert to data class
-class Message {
-  final int createdAt;
-  final String title;
-  final String preview;
-  final String message;
-
-  const Message({
-    required this.createdAt,
-    required this.title,
-    required this.preview,
-    required this.message,
-  });
 }
 
 class MyApp extends StatelessWidget {
@@ -45,6 +32,12 @@ class MyApp extends StatelessWidget {
         preview: "test preview 3",
         message: "test message 3",
       ),
+      Message.fromJsonString("""{
+                                "createdAt": 200,
+                                "title": "from json title",
+                                "preview": "from json preview",
+                                "message": "from json message"
+                              }"""),
     ];
 
     return MaterialApp(
