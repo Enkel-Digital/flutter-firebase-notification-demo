@@ -12,25 +12,37 @@ class BasicWebView extends StatelessWidget {
   Widget build(BuildContext context) {
     return WebView(
       initialUrl: 'about:blank',
-      onWebViewCreated: (WebViewController webViewController) {
-        webViewController.loadUrl(Uri.dataFromString(createHTML(message),
-                mimeType: 'text/html', encoding: Encoding.getByName("utf-8"))
-            .toString());
-      },
+      onWebViewCreated: (WebViewController webViewController) =>
+          webViewController.loadUrl(Uri.dataFromString(createHTML(message),
+                  mimeType: 'text/html', encoding: Encoding.getByName("utf-8"))
+              .toString()),
     );
   }
 }
 
-// Inject message value into the HTML body and return the whole HTML
-String createHTML(String message) {
+// Utility function to inject message value into the HTML body and return the whole HTML
+String createHTML(final String uriEncodedMessage) {
+  final message = Uri.decodeComponent(uriEncodedMessage);
   return """
     <!DOCTYPE html>
     <html>
     <head>
         <meta charset='utf-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
+        
+        <!-- @todo Might download it directly to reduce network usage -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css"> 
+        <!--
+        -->
+        
+        <style>
+            body {
+                margin: 1em;
+            }
+        </style>
     </head>
     <body>
+        <br />
         $message
     </body>
     </html>
