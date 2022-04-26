@@ -4,51 +4,56 @@ import './message.dart';
 import './webview.dart';
 
 void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    final List<Message> messages = [
-      const Message(
-        createdAt: 123,
-        title: "test title",
-        preview: "test preview",
-        message: "test message",
-      ),
-      const Message(
-        createdAt: 124,
-        title: "test title 2",
-        preview: "test preview 2",
-        message: "test message 2",
-      ),
-      const Message(
-        createdAt: 125,
-        title: "test title 3",
-        preview: "test preview 3",
-        message: "test message 3",
-      ),
-      Message.fromJsonString("""{
+  final messages = [
+    const Message(
+      createdAt: 123,
+      title: "test title",
+      preview: "test preview",
+      message: "test message",
+    ),
+    const Message(
+      createdAt: 124,
+      title: "test title 2",
+      preview: "test preview 2",
+      message: "test message 2",
+    ),
+    const Message(
+      createdAt: 125,
+      title: "test title 3",
+      preview: "test preview 3",
+      message: "test message 3",
+    ),
+    Message.fromJsonString("""{
                                 "createdAt": 200,
                                 "title": "from json title",
                                 "preview": "from json preview",
                                 "message": "from json message"
                               }"""),
-    ];
+  ];
 
+  runApp(Home(messages: messages));
+}
+
+// This is the root widget of the application
+class Home extends StatelessWidget {
+  final List<Message> messages;
+
+  const Home({Key? key, required this.messages}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Commissioner's App",
+      title: "Management Connect",
 
       // This is the theme of your application.
       theme: ThemeData(primarySwatch: Colors.blue),
 
       home: Scaffold(
-          appBar: AppBar(title: const Text("Commissioner's App")),
-          body: Center(child: ListOfMsgs(messages: messages))),
+        appBar: AppBar(
+          title: const Text("Management Connect"),
+        ),
+        body: Center(child: ListOfMsgs(messages: messages)),
+      ),
     );
   }
 }
