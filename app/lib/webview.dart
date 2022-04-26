@@ -10,13 +10,13 @@ class BasicWebView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WebView(
-      initialUrl: 'about:blank',
-      onWebViewCreated: (WebViewController webViewController) =>
-          webViewController.loadUrl(Uri.dataFromString(createHTML(message),
-                  mimeType: 'text/html', encoding: Encoding.getByName("utf-8"))
-              .toString()),
-    );
+    return Scaffold(
+        appBar: AppBar(),
+        body: WebView(
+            initialUrl: Uri.dataFromString(createHTML(message),
+                    mimeType: 'text/html',
+                    encoding: Encoding.getByName("utf-8"))
+                .toString()));
   }
 }
 
@@ -42,7 +42,6 @@ String createHTML(final String uriEncodedMessage) {
         </style>
     </head>
     <body>
-        <br />
         $message
     </body>
     </html>
