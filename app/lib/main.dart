@@ -94,6 +94,46 @@ class MessagePreview extends StatelessWidget {
   }
 }
 
+class BigMessagePreview extends StatelessWidget {
+  final Message message;
+
+  const BigMessagePreview({Key? key, required this.message}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => BasicWebView(message: message.message)),
+      ),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                message.title,
+                style:
+                    const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+
+              // Spacing
+              const SizedBox(height: 16),
+
+              Text(
+                message.preview,
+                style: const TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class ListOfMsgs extends StatelessWidget {
   final List<Message> messages;
 
@@ -106,6 +146,11 @@ class ListOfMsgs extends StatelessWidget {
       itemCount: messages.length,
       separatorBuilder: (BuildContext context, int index) => const Divider(),
       itemBuilder: (BuildContext context, int index) {
+        // Return different widget for the first message, aka the latest message
+        if (index == 0) {
+          return BigMessagePreview(message: messages[index]);
+        }
+
         return MessagePreview(message: messages[index]);
       },
     );
