@@ -77,7 +77,7 @@ class MessagePreview extends StatelessWidget {
       onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => BasicWebView(message: message.message))),
+              builder: (context) => BasicWebView(message: message))),
 
       child: Card(
         child: Padding(
@@ -120,11 +120,12 @@ class BigMessagePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      // Open WebView widget on top or Home widget on clicking an item
       onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => BasicWebView(message: message.message)),
-      ),
+          context,
+          MaterialPageRoute(
+              builder: (context) => BasicWebView(message: message))),
+
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(16),

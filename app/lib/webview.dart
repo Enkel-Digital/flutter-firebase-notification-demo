@@ -3,17 +3,21 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import './message.dart';
+
 class BasicWebView extends StatelessWidget {
-  final String message;
+  final Message message;
 
   const BasicWebView({Key? key, required this.message}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text(message.title),
+        ),
         body: WebView(
-            initialUrl: Uri.dataFromString(createHTML(message),
+            initialUrl: Uri.dataFromString(createHTML(message.message),
                     mimeType: 'text/html',
                     encoding: Encoding.getByName("utf-8"))
                 .toString()));
