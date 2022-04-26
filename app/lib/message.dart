@@ -4,12 +4,14 @@ class Message {
   final int createdAt;
   final String title;
   final String preview;
+  final String previewImg;
   final String message;
 
   const Message({
     required this.createdAt,
     required this.title,
     required this.preview,
+    required this.previewImg,
     required this.message,
   });
 
@@ -27,6 +29,7 @@ class Message {
         createdAt: json['createdAt'],
         title: json['title'],
         preview: json['preview'],
+        previewImg: json['previewImg'],
         message: json['message']);
   }
 }

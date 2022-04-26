@@ -9,24 +9,31 @@ void main() {
       createdAt: 123,
       title: "test title",
       preview: "test preview",
+      previewImg:
+          "https://www.english-efl.com/wp-content/uploads/2019/12/test.jpg",
       message: "test message",
     ),
     const Message(
       createdAt: 124,
       title: "test title 2",
       preview: "test preview 2",
+      previewImg:
+          "https://www.english-efl.com/wp-content/uploads/2019/12/test.jpg",
       message: "test message 2",
     ),
     const Message(
       createdAt: 125,
       title: "test title 3",
       preview: "test preview 3",
+      previewImg:
+          "https://www.english-efl.com/wp-content/uploads/2019/12/test.jpg",
       message: "test message 3",
     ),
     Message.fromJsonString("""{
                                 "createdAt": 200,
                                 "title": "from json title",
                                 "preview": "from json preview",
+                                "previewImg": "https://www.english-efl.com/wp-content/uploads/2019/12/test.jpg",
                                 "message": "from json message"
                               }"""),
   ];
@@ -78,6 +85,12 @@ class MessagePreview extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Image(
+                image: NetworkImage(message.previewImg),
+                fit: BoxFit.contain,
+                // fit: BoxFit.fitHeight,
+              ),
+
               Text(
                 message.title,
                 style:
@@ -118,6 +131,12 @@ class BigMessagePreview extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Image(
+                image: NetworkImage(message.previewImg),
+                fit: BoxFit.contain,
+                // fit: BoxFit.fitHeight,
+              ),
+
               Text(
                 message.title,
                 style:
