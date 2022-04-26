@@ -60,18 +60,36 @@ class MessagePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return Container(
-    // height: 50,
-    // color: Colors.grey,
-    return TextButton(
-      child: Center(child: Text('inside msg preview: ${message.preview}')),
-      onPressed: () {
-        Navigator.push(
+    return GestureDetector(
+      // Open WebView widget on top or Home widget on clicking an item
+      onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => BasicWebView(message: message.message)),
-        );
-      },
+              builder: (context) => BasicWebView(message: message.message))),
+
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                message.title,
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+
+              // Spacing
+              const SizedBox(height: 16),
+
+              Text(
+                message.preview,
+                style: const TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
