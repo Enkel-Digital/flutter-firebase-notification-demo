@@ -59,17 +59,14 @@ void main() {
       // lifecycle, making sure to call `dispose` when not needed anymore.
       create: (context) => model,
 
-      // Remove the data passing over here
-      child: App(messages: model.messages),
+      child: const App(),
     ),
   );
 }
 
 /// This is the root widget of the application
 class App extends StatelessWidget {
-  final List<Message> messages;
-
-  const App({Key? key, required this.messages}) : super(key: key);
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -79,16 +76,14 @@ class App extends StatelessWidget {
       // This is the theme of your application.
       theme: ThemeData(primarySwatch: Colors.blue),
 
-      home: Home(messages: messages),
+      home: const Home(),
     );
   }
 }
 
 /// This is the Home Screen widget
 class Home extends StatelessWidget {
-  final List<Message> messages;
-
-  const Home({Key? key, required this.messages}) : super(key: key);
+  const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +97,7 @@ class Home extends StatelessWidget {
           )
         ],
       ),
-      drawer: HomeDrawer(messages: messages),
+      drawer: const HomeDrawer(),
       body: const Center(child: ListOfMsgs()),
     );
   }
