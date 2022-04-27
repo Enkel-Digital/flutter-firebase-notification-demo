@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import './drawer.dart';
 import './message.dart';
 import './webview.dart';
 
@@ -38,14 +39,14 @@ void main() {
                               }"""),
   ];
 
-  runApp(Home(messages: messages));
+  runApp(App(messages: data.messages));
 }
 
-// This is the root widget of the application
-class Home extends StatelessWidget {
+/// This is the root widget of the application
+class App extends StatelessWidget {
   final List<Message> messages;
 
-  const Home({Key? key, required this.messages}) : super(key: key);
+  const App({Key? key, required this.messages}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +56,35 @@ class Home extends StatelessWidget {
       // This is the theme of your application.
       theme: ThemeData(primarySwatch: Colors.blue),
 
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text("Management Connect"),
-        ),
-        body: Center(child: ListOfMsgs(messages: messages)),
+      home: Home(messages: messages),
+    );
+  }
+}
+
+/// This is the Home Screen widget
+class Home extends StatelessWidget {
+  final List<Message> messages;
+
+  const Home({Key? key, required this.messages}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Management Connect"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              // @todo Call API to reload
+              // ignore: avoid_print
+              print("Reload pressed");
+            },
+            icon: const Icon(Icons.restart_alt),
+          )
+        ],
       ),
+      drawer: const HomeDrawer(),
+      body: Center(child: ListOfMsgs(messages: messages)),
     );
   }
 }
