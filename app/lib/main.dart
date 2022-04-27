@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import './data.dart';
 import './drawer.dart';
 import './message.dart';
 import './webview.dart';
 
 void main() {
-  final messages = [
+  final model = DataModel();
+  model.messages = [
     const Message(
       createdAt: 123,
       type: "cm",
@@ -44,7 +47,22 @@ void main() {
                               }"""),
   ];
 
-  runApp(App(messages: data.messages));
+  runApp(
+    // Provide the model to all widgets within the app. We're using
+    // ChangeNotifierProvider because that's a simple way to rebuild
+    // widgets when a model changes. We could also just use
+    // Provider, but then we would have to listen to Counter ourselves.
+    //
+    // Read Provider's docs to learn about all the available providers.
+    ChangeNotifierProvider(
+      // Initialize model in the builder so that Provider can own Model's
+      // lifecycle, making sure to call `dispose` when not needed anymore.
+      create: (context) => model,
+
+      // Remove the data passing over here
+      child: App(messages: model.messages),
+    ),
+  );
 }
 
 /// This is the root widget of the application
@@ -79,17 +97,13 @@ class Home extends StatelessWidget {
         title: const Text("Management Connect"),
         actions: [
           IconButton(
-            onPressed: () {
-              // @todo Call API to reload
-              // ignore: avoid_print
-              print("Reload pressed");
-            },
+            onPressed: () => context.read<DataModel>().syncData(),
             icon: const Icon(Icons.restart_alt),
           )
         ],
       ),
       drawer: HomeDrawer(messages: messages),
-      body: Center(child: ListOfMsgs(messages: messages)),
+      body: const Center(child: ListOfMsgs()),
     );
   }
 }
@@ -195,24 +209,21 @@ class BigMessagePreview extends StatelessWidget {
 }
 
 class ListOfMsgs extends StatelessWidget {
-  final List<Message> messages;
-
-  const ListOfMsgs({Key? key, required this.messages}) : super(key: key);
+  const ListOfMsgs({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: const EdgeInsets.all(10),
-      itemCount: messages.length,
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
-      itemBuilder: (BuildContext context, int index) {
-        // Return different widget for the first message, aka the latest message
-        if (index == 0) {
-          return BigMessagePreview(message: messages[index]);
-        }
+  Widget build(BuildContext context) => Consumer<DataModel>(
+        builder: (context, dataModel, child) => ListView.separated(
+          padding: const EdgeInsets.all(10),
+          itemCount: dataModel.messages.length,
 
-        return MessagePreview(message: messages[index]);
-      },
-    );
-  }
+          separatorBuilder: (BuildContext context, int index) =>
+              const Divider(),
+
+          // Return different widget for the first message, aka the latest message
+          itemBuilder: (BuildContext context, int index) => (index == 0)
+              ? BigMessagePreview(message: dataModel.messages[index])
+              : MessagePreview(message: dataModel.messages[index]),
+        ),
+      );
 }
