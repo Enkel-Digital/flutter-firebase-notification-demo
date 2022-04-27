@@ -80,32 +80,38 @@ class MessagePreview extends StatelessWidget {
               builder: (context) => BasicWebView(message: message))),
 
       child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image(
-                image: NetworkImage(message.previewImg),
-                fit: BoxFit.contain,
-                // fit: BoxFit.fitHeight,
-              ),
+        child: Row(
+          children: [
+            Image(
+              image: NetworkImage(message.previewImg),
+              fit: BoxFit.fitWidth,
+              // Picture can only take up 30% of screen width
+              width: MediaQuery.of(context).size.width * 0.3,
+            ),
 
-              Text(
-                message.title,
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+            //
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    message.title,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
 
-              // Spacing
-              const SizedBox(height: 16),
+                  // Spacing
+                  const SizedBox(height: 16),
 
-              Text(
-                message.preview,
-                style: const TextStyle(fontSize: 16),
+                  Text(
+                    message.preview,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ],
               ),
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
@@ -167,7 +173,7 @@ class ListOfMsgs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(10),
       itemCount: messages.length,
       separatorBuilder: (BuildContext context, int index) => const Divider(),
       itemBuilder: (BuildContext context, int index) {
