@@ -8,6 +8,7 @@ void main() {
   final messages = [
     const Message(
       createdAt: 123,
+      type: "cm",
       title: "test title",
       preview: "test preview",
       previewImg:
@@ -16,6 +17,7 @@ void main() {
     ),
     const Message(
       createdAt: 124,
+      type: "cm",
       title: "test title 2",
       preview: "test preview 2",
       previewImg:
@@ -24,6 +26,8 @@ void main() {
     ),
     const Message(
       createdAt: 125,
+      type:
+          "a super super super super super super super super super long message type",
       title: "test title 3",
       preview: "test preview 3",
       previewImg:
@@ -32,6 +36,7 @@ void main() {
     ),
     Message.fromJsonString("""{
                                 "createdAt": 200,
+                                "type": "cm",
                                 "title": "from json title",
                                 "preview": "from json preview",
                                 "previewImg": "https://www.english-efl.com/wp-content/uploads/2019/12/test.jpg",
@@ -83,7 +88,7 @@ class Home extends StatelessWidget {
           )
         ],
       ),
-      drawer: const HomeDrawer(),
+      drawer: HomeDrawer(messages: messages),
       body: Center(child: ListOfMsgs(messages: messages)),
     );
   }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 class Message {
   final int createdAt;
+  final String type;
   final String title;
   final String preview;
   final String previewImg;
@@ -9,6 +10,7 @@ class Message {
 
   const Message({
     required this.createdAt,
+    required this.type,
     required this.title,
     required this.preview,
     required this.previewImg,
@@ -27,6 +29,7 @@ class Message {
     final Map<String, dynamic> json = jsonDecode(jsonString);
     return Message(
         createdAt: json['createdAt'],
+        type: json['type'],
         title: json['title'],
         preview: json['preview'],
         previewImg: json['previewImg'],

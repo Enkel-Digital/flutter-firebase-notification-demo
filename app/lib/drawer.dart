@@ -1,13 +1,40 @@
 import 'package:flutter/material.dart';
 
+import './message.dart';
 import './settings.dart';
 
 /// Drawer widget
 class HomeDrawer extends StatelessWidget {
-  const HomeDrawer({Key? key}) : super(key: key);
+  final List<Message> messages;
+
+  const HomeDrawer({Key? key, required this.messages}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Fold messages to count how many messages per type
+    // Note that this runs every single time drawer is opened
+    // Reference: https://stackoverflow.com/a/66492956
+    //
+    // Then create a list of widgets with the map of "message type to count"
+    final messageTypes = messages
+        .fold(
+            <String, int>{},
+            (Map<String, int> map, msg) =>
+                map..update(msg.type, (count) => count + 1, ifAbsent: () => 1))
+        .entries
+        .map((entry) => ListTile(
+            // @todo Pick a nicer icon
+            leading: const Icon(Icons.indeterminate_check_box),
+            title: Text(entry.key),
+            trailing: Text(entry.value.toString()),
+            onTap: () {
+              // Update the state of the app.
+              // ...
+              // Then close the drawer
+              Navigator.pop(context);
+            }))
+        .toList();
+
     return Drawer(
       // ListView lets users scroll through options even if there isn't enough vertical space
       child: ListView(
@@ -28,6 +55,7 @@ class HomeDrawer extends StatelessWidget {
 
           // Default home page route
           ListTile(
+            leading: const Icon(Icons.home),
             title: const Text('Show all Messages'),
             onTap: () {
               // Update the state of the app.
@@ -47,16 +75,8 @@ class HomeDrawer extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           ),
 
-          // @todo Programmatically generate this based on all the message types with indexes
-          ListTile(
-            title: const Text('Message type 1'),
-            onTap: () {
-              // Update the state of the app.
-              // ...
-              // Then close the drawer
-              Navigator.pop(context);
-            },
-          ),
+          // Programmatically generated message type widgets
+          ...messageTypes,
 
           const Divider(color: Colors.grey),
 
