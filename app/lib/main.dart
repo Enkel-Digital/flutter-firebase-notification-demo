@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import './data.dart';
 import './drawer.dart';
@@ -114,6 +115,10 @@ class MessagePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // @todo TMP: Set true to allow word wrap and set false to prevent word wrap to single line
+    // ignore: dead_code
+    const overflow = false ? TextOverflow.visible : TextOverflow.ellipsis;
+
     return GestureDetector(
       // Open WebView widget on top or Home widget on clicking an item
       onTap: () => Navigator.push(
@@ -126,33 +131,46 @@ class MessagePreview extends StatelessWidget {
           children: [
             Image(
               image: NetworkImage(message.previewImg),
+              loadingBuilder: (context, child, loadingProgress) =>
+                  loadingProgress == null
+                      ? child
+                      : const CircularProgressIndicator(),
               fit: BoxFit.fitWidth,
               // Picture can only take up 30% of screen width
               width: MediaQuery.of(context).size.width * 0.3,
             ),
 
-            //
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    message.title,
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
+            // Text beside the image
+            SizedBox(
+                // The rest of the words should only take up 60% of screen width
+                // Calculated by (Row - 0.3) - someForPadding
+                width: MediaQuery.of(context).size.width * 0.6,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(message.title,
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              overflow: overflow)),
+                      Text(message.preview,
+                          style: const TextStyle(overflow: overflow)),
 
-                  // Spacing
-                  const SizedBox(height: 16),
+                      // Spacing
+                      const Divider(),
 
-                  Text(
-                    message.preview,
-                    style: const TextStyle(fontSize: 16),
+                      // Show the date when the message was created
+                      Text(
+                        DateFormat('E, MMMM d, y').format(
+                            DateTime.fromMillisecondsSinceEpoch(
+                                message.createdAt * 1000)),
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            )
+                ))
           ],
         ),
       ),
@@ -182,9 +200,23 @@ class BigMessagePreview extends StatelessWidget {
             children: [
               Image(
                 image: NetworkImage(message.previewImg),
+                loadingBuilder: (context, child, loadingProgress) =>
+                    loadingProgress == null
+                        ? child
+                        : const CircularProgressIndicator(),
                 fit: BoxFit.contain,
-                // fit: BoxFit.fitHeight,
               ),
+
+              // Spacing
+              const SizedBox(height: 14),
+
+              // Show the date when the message was created
+              Text(DateFormat('E, MMMM d, y').format(
+                  DateTime.fromMillisecondsSinceEpoch(
+                      message.createdAt * 1000))),
+
+              // Spacing
+              const Divider(),
 
               Text(
                 message.title,
@@ -193,7 +225,7 @@ class BigMessagePreview extends StatelessWidget {
               ),
 
               // Spacing
-              const SizedBox(height: 16),
+              const SizedBox(height: 14),
 
               Text(
                 message.preview,
@@ -207,6 +239,8 @@ class BigMessagePreview extends StatelessWidget {
   }
 }
 
+/// This widget maps a list of messages to a ListView of Message Preview widgets,
+/// which can be of type `MessagePreview` or `BigMessagePreview`
 class ListOfMsgs extends StatelessWidget {
   const ListOfMsgs({Key? key}) : super(key: key);
 
