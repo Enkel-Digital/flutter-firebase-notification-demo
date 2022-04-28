@@ -5,11 +5,18 @@ import './message.dart';
 /// [ChangeNotifier] is a class in `flutter:foundation`
 /// [DataModel] does NOT depend on Provider.
 class DataModel with ChangeNotifier {
+  // @todo Make this a singleton
+  DataModel();
+
   int lastSync = 0;
   List<Message> messages = [];
 
-  // @todo Make this a singleton
-  DataModel();
+  String? filterBy;
+
+  /// Getter for messages, filtered if `filterBy` is not null
+  List<Message> get msgs => filterBy == null
+      ? messages
+      : messages.where((msg) => msg.type == filterBy).toList();
 
   // Factory function to create Message object from a json string
   // factory DataModel.fromJsonString(String jsonString) {
@@ -36,4 +43,16 @@ class DataModel with ChangeNotifier {
     // Rebuild widgets
     notifyListeners();
   }
+
+  /// Method to update filterBy value
+  void filterWith(String? messageType) {
+    // @todo Check if the string is valid against all the message types
+
+    filterBy = messageType;
+
+    // Rebuild widgets
+    notifyListeners();
+  }
+}
+
 }

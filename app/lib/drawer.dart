@@ -11,8 +11,8 @@ class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Consumer<DataModel>(
         builder: (context, dataModel, child) {
+          // @todo Run this once only every time messages is updated instead of running every single time drawer is opened
           // Fold messages to count how many messages per type
-          // Note that this runs every single time drawer is opened
           // Reference: https://stackoverflow.com/a/66492956
           //
           // Then create a list of widgets with the map of "message type to count"
@@ -22,14 +22,14 @@ class HomeDrawer extends StatelessWidget {
                   (Map<String, int> map, msg) => map
                     ..update(msg.type, (count) => count + 1, ifAbsent: () => 1))
               .entries
+              // @todo Sort by anything or random?
               .map((entry) => ListTile(
-                  // @todo Pick a nicer icon
-                  leading: const Icon(Icons.indeterminate_check_box),
+                  leading: const Icon(Icons.arrow_right_alt),
                   title: Text(entry.key),
                   trailing: Text(entry.value.toString()),
                   onTap: () {
                     // Update the state of the app.
-                    // ...
+                    context.read<DataModel>().filterWith(entry.key);
                     // Then close the drawer
                     Navigator.pop(context);
                   }))
@@ -41,17 +41,12 @@ class HomeDrawer extends StatelessWidget {
               // Important: Remove any padding from the ListView.
               padding: EdgeInsets.zero,
 
-              // 1. All messages
-              // Divider that says, 'filter by'
-              // 2. Message type $X
-              // 3. Message type $X
               children: [
                 // @todo Add app logo here
-                const DrawerHeader(
-                  // @todo Use theme color instead of manually setting it here
-                  decoration: BoxDecoration(color: Colors.blue),
-                  child: Text('Drawer Header'),
-                ),
+                DrawerHeader(
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary),
+                    child: const Text('Drawer Header')),
 
                 // Default home page route
                 ListTile(
@@ -59,7 +54,7 @@ class HomeDrawer extends StatelessWidget {
                   title: const Text('Show all Messages'),
                   onTap: () {
                     // Update the state of the app.
-                    // ...
+                    context.read<DataModel>().filterWith(null);
                     // Then close the drawer
                     Navigator.pop(context);
                   },
@@ -97,8 +92,13 @@ class HomeDrawer extends StatelessWidget {
                   },
                 ),
 
-                // @todo Show app version here
                 // @todo Show feedback link here
+
+                const ListTile(
+                  leading: Icon(Icons.app_settings_alt),
+                  // @todo Show dynamic app version + build time
+                  title: Text('Version 0.0.0'),
+                ),
               ],
             ),
           );

@@ -89,7 +89,11 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Management Connect"),
+        // Show the current message type shown as the title
+        title: Consumer<DataModel>(
+            builder: (context, dataModel, child) =>
+                Text(dataModel.filterBy ?? "Management Connect")),
+
         actions: [
           IconButton(
             onPressed: () => context.read<DataModel>().syncData(),
@@ -98,7 +102,7 @@ class Home extends StatelessWidget {
         ],
       ),
       drawer: const HomeDrawer(),
-      body: const Center(child: ListOfMsgs()),
+      body: const ListOfMsgs(),
     );
   }
 }
@@ -210,15 +214,15 @@ class ListOfMsgs extends StatelessWidget {
   Widget build(BuildContext context) => Consumer<DataModel>(
         builder: (context, dataModel, child) => ListView.separated(
           padding: const EdgeInsets.all(10),
-          itemCount: dataModel.messages.length,
+          itemCount: dataModel.msgs.length,
 
           separatorBuilder: (BuildContext context, int index) =>
               const Divider(),
 
           // Return different widget for the first message, aka the latest message
           itemBuilder: (BuildContext context, int index) => (index == 0)
-              ? BigMessagePreview(message: dataModel.messages[index])
-              : MessagePreview(message: dataModel.messages[index]),
+              ? BigMessagePreview(message: dataModel.msgs[index])
+              : MessagePreview(message: dataModel.msgs[index]),
         ),
       );
 }
