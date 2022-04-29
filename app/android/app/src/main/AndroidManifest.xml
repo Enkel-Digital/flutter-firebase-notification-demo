@@ -1,5 +1,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.app">
+
+   <!-- Permissions -->
+   <uses-permission android:name="android.permission.INTERNET" />
+   
+    <!-- Allow app to open https URLs using the 'url_launcher' dependency -->
+   <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
    <application
         android:label="$app_name_here"
         android:name="${applicationName}"
