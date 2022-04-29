@@ -70,16 +70,14 @@ class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Management Connect",
+  Widget build(BuildContext context) => MaterialApp(
+        title: "Management Connect",
 
-      // This is the theme of your application.
-      theme: ThemeData(primarySwatch: Colors.blue),
+        // This is the theme of your application.
+        theme: ThemeData(primarySwatch: Colors.blue),
 
-      home: const Home(),
-    );
-  }
+        home: const Home(),
+      );
 }
 
 /// This is the Home Screen widget
@@ -87,27 +85,25 @@ class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // Show the current message type + number of messages of that type as the title
-        title: Consumer<DataModel>(
-            builder: (context, dataModel, child) => Text(dataModel.filterBy ==
-                    null
-                ? 'Management Connect (${dataModel.messages.length})'
-                : '${dataModel.filterBy} (${dataModel.messageTypes[dataModel.filterBy]})')),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          // Show the current message type + number of messages of that type as the title
+          title: Consumer<DataModel>(
+              builder: (context, dataModel, child) => Text(dataModel.filterBy ==
+                      null
+                  ? 'Management Connect (${dataModel.messages.length})'
+                  : '${dataModel.filterBy} (${dataModel.messageTypes[dataModel.filterBy]})')),
 
-        actions: [
-          IconButton(
-            onPressed: () => context.read<DataModel>().syncData(),
-            icon: const Icon(Icons.restart_alt),
-          )
-        ],
-      ),
-      drawer: const HomeDrawer(),
-      body: const ListOfMsgs(),
-    );
-  }
+          actions: [
+            IconButton(
+              onPressed: () => context.read<DataModel>().syncData(),
+              icon: const Icon(Icons.restart_alt),
+            )
+          ],
+        ),
+        drawer: const HomeDrawer(),
+        body: const ListOfMsgs(),
+      );
 }
 
 class MessagePreview extends StatelessWidget {
@@ -186,59 +182,57 @@ class BigMessagePreview extends StatelessWidget {
   const BigMessagePreview({Key? key, required this.message}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      // Open WebView widget on top or Home widget on clicking an item
-      onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => BasicWebView(message: message))),
+  Widget build(BuildContext context) => GestureDetector(
+        // Open WebView widget on top or Home widget on clicking an item
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => BasicWebView(message: message))),
 
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image(
-                image: NetworkImage(message.previewImg),
-                loadingBuilder: (context, child, loadingProgress) =>
-                    loadingProgress == null
-                        ? child
-                        : const CircularProgressIndicator(),
-                fit: BoxFit.contain,
-              ),
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image(
+                  image: NetworkImage(message.previewImg),
+                  loadingBuilder: (context, child, loadingProgress) =>
+                      loadingProgress == null
+                          ? child
+                          : const CircularProgressIndicator(),
+                  fit: BoxFit.contain,
+                ),
 
-              // Spacing
-              const SizedBox(height: 14),
+                // Spacing
+                const SizedBox(height: 14),
 
-              // Show the date when the message was created
-              Text(DateFormat('E, MMMM d, y').format(
-                  DateTime.fromMillisecondsSinceEpoch(
-                      message.createdAt * 1000))),
+                // Show the date when the message was created
+                Text(DateFormat('E, MMMM d, y').format(
+                    DateTime.fromMillisecondsSinceEpoch(
+                        message.createdAt * 1000))),
 
-              // Spacing
-              const Divider(),
+                // Spacing
+                const Divider(),
 
-              Text(
-                message.title,
-                style:
-                    const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
+                Text(
+                  message.title,
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.bold),
+                ),
 
-              // Spacing
-              const SizedBox(height: 14),
+                // Spacing
+                const SizedBox(height: 14),
 
-              Text(
-                message.preview,
-                style: const TextStyle(fontSize: 16),
-              ),
-            ],
+                Text(
+                  message.preview,
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 /// This widget maps a list of messages to a ListView of Message Preview widgets,

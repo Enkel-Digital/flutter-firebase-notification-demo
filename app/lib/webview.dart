@@ -11,17 +11,14 @@ class BasicWebView extends StatelessWidget {
   const BasicWebView({Key? key, required this.message}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(message.title),
-        ),
-        body: WebView(
-            initialUrl: Uri.dataFromString(createHTML(message.message),
-                    mimeType: 'text/html',
-                    encoding: Encoding.getByName("utf-8"))
-                .toString()));
-  }
+  Widget build(BuildContext context) => Scaffold(
+      appBar: AppBar(
+        title: Text(message.title),
+      ),
+      body: WebView(
+          initialUrl: Uri.dataFromString(createHTML(message.message),
+                  mimeType: 'text/html', encoding: Encoding.getByName("utf-8"))
+              .toString()));
 }
 
 // Utility function to inject message value into the HTML body and return the whole HTML
