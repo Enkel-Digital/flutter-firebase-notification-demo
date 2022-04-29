@@ -1,5 +1,6 @@
 /// Module for the DataModel / state management logic of the app.
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 
 import './message.dart';
 
@@ -11,13 +12,17 @@ class DataModel with ChangeNotifier {
 
   int lastSync = 0;
   List<Message> messages = [];
-
   String? filterBy;
 
   /// Getter for messages, filtered if `filterBy` is not null
   List<Message> get msgs => filterBy == null
       ? messages
       : messages.where((msg) => msg.type == filterBy).toList();
+
+  /// Getter for string formatted last sync time
+  String get lastSyncTimeString => DateFormat('E, MMM d y, h:mma').format(
+      DateTime.fromMillisecondsSinceEpoch(lastSync * 1000, isUtc: true)
+          .toLocal());
 
   // Factory function to create Message object from a json string
   // factory DataModel.fromJsonString(String jsonString) {
@@ -40,6 +45,9 @@ class DataModel with ChangeNotifier {
     // Call API
 
     // Update instance data
+
+    // @todo TMP Demo logic
+    lastSync = (DateTime.now().millisecondsSinceEpoch / 1000).truncate();
 
     // Rebuild widgets
     notifyListeners();
