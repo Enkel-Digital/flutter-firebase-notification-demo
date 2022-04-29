@@ -90,10 +90,12 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Show the current message type shown as the title
+        // Show the current message type + number of messages of that type as the title
         title: Consumer<DataModel>(
-            builder: (context, dataModel, child) =>
-                Text(dataModel.filterBy ?? "Management Connect")),
+            builder: (context, dataModel, child) => Text(dataModel.filterBy ==
+                    null
+                ? 'Management Connect (${dataModel.messages.length})'
+                : '${dataModel.filterBy} (${dataModel.messageTypes[dataModel.filterBy]})')),
 
         actions: [
           IconButton(

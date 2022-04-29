@@ -24,6 +24,15 @@ class DataModel with ChangeNotifier {
       DateTime.fromMillisecondsSinceEpoch(lastSync * 1000, isUtc: true)
           .toLocal());
 
+  /// Getter for the mapping of message types to number of messages for that type.
+  ///
+  /// Fold messages to count how many messages per type.
+  /// Reference: https://stackoverflow.com/a/66492956
+  Map<String, int> get messageTypes => messages.fold(
+      <String, int>{},
+      (Map<String, int> map, msg) =>
+          map..update(msg.type, (count) => count + 1, ifAbsent: () => 1));
+
   // Factory function to create Message object from a json string
   // factory DataModel.fromJsonString(String jsonString) {
   //   final Map<String, dynamic> json = jsonDecode(jsonString);

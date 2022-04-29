@@ -11,30 +11,6 @@ class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Consumer<DataModel>(
         builder: (context, dataModel, child) {
-          // @todo Run this once only every time messages is updated instead of running every single time drawer is opened
-          // Fold messages to count how many messages per type
-          // Reference: https://stackoverflow.com/a/66492956
-          //
-          // Then create a list of widgets with the map of "message type to count"
-          final messageTypes = dataModel.messages
-              .fold(
-                  <String, int>{},
-                  (Map<String, int> map, msg) => map
-                    ..update(msg.type, (count) => count + 1, ifAbsent: () => 1))
-              .entries
-              // @todo Sort by anything or random?
-              .map((entry) => ListTile(
-                  leading: const Icon(Icons.arrow_right_alt),
-                  title: Text(entry.key),
-                  trailing: Text(entry.value.toString()),
-                  onTap: () {
-                    // Update the state of the app.
-                    context.read<DataModel>().filterWith(entry.key);
-                    // Then close the drawer
-                    Navigator.pop(context);
-                  }))
-              .toList();
-
           return Drawer(
             // ListView lets users scroll through options even if there isn't enough vertical space
             child: ListView(
@@ -42,6 +18,9 @@ class HomeDrawer extends StatelessWidget {
               padding: EdgeInsets.zero,
 
               children: [
+                // Spacing to ensure DrawerHeader's image not partially covered by OS top bar
+                const SizedBox(height: 14),
+
                 const DrawerHeader(
                   child: SizedBox.shrink(),
                   decoration: BoxDecoration(
@@ -54,6 +33,7 @@ class HomeDrawer extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.home),
                   title: const Text('Show all Messages'),
+                  trailing: Text(dataModel.messages.length.toString()),
                   onTap: () {
                     // Update the state of the app.
                     context.read<DataModel>().filterWith(null);
@@ -73,8 +53,36 @@ class HomeDrawer extends StatelessWidget {
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
 
+                // @todo Current order is random, sort by anything?
                 // Programmatically generated message type widgets
-                ...messageTypes,
+                for (final entry in dataModel.messageTypes.entries)
+                  ListTile(
+                      leading: const Icon(Icons.arrow_right_alt),
+                      title: Text(entry.key),
+                      trailing: Text(entry.value.toString()),
+                      onTap: () {
+                        // Update the state of the app.
+                        context.read<DataModel>().filterWith(entry.key);
+                        // Then close the drawer
+                        Navigator.pop(context);
+                      }),
+
+                /* Alternative: Generate the list before this drawer widget */
+                // Create a list of widgets with the map of "message type to count"
+                // final messageTypes = dataModel.messageTypes.entries
+                //     .map((entry) => ListTile(
+                //         leading: const Icon(Icons.arrow_right_alt),
+                //         title: Text(entry.key),
+                //         trailing: Text(entry.value.toString()),
+                //         onTap: () {
+                //           // Update the state of the app.
+                //           context.read<DataModel>().filterWith(entry.key);
+                //           // Then close the drawer
+                //           Navigator.pop(context);
+                //         }))
+                //     .toList();
+                // // Leave this in this array
+                // ...messageTypes,
 
                 const Divider(color: Colors.grey),
 
