@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import './data.dart';
 import './settings.dart';
@@ -34,6 +35,11 @@ class HomeDrawer extends StatelessWidget {
                     Navigator.pop(context);
                   }))
               .toList();
+
+          final syncTimeString = DateFormat('E, MMM d y, h:mma').format(
+              DateTime.fromMillisecondsSinceEpoch(dataModel.lastSync * 1000,
+                      isUtc: true)
+                  .toLocal());
 
           return Drawer(
             // ListView lets users scroll through options even if there isn't enough vertical space
@@ -92,6 +98,11 @@ class HomeDrawer extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => SettingsWidget()));
                   },
+                ),
+
+                ListTile(
+                  leading: const Icon(Icons.timelapse),
+                  title: Text('Last Sync:\n$syncTimeString'),
                 ),
 
                 // @todo Show feedback link here
