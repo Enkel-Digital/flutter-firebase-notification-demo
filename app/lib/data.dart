@@ -1,3 +1,4 @@
+/// Module for the DataModel / state management logic of the app.
 import 'package:flutter/foundation.dart';
 
 import './message.dart';

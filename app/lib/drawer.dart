@@ -42,11 +42,13 @@ class HomeDrawer extends StatelessWidget {
               padding: EdgeInsets.zero,
 
               children: [
-                // @todo Add app logo here
-                DrawerHeader(
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary),
-                    child: const Text('Drawer Header')),
+                const DrawerHeader(
+                  child: SizedBox.shrink(),
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('images/logo.png'),
+                          fit: BoxFit.contain)),
+                ),
 
                 // Default home page route
                 ListTile(
