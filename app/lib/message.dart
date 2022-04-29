@@ -5,16 +5,16 @@ class Message {
   final String type;
   final String title;
   final String preview;
-  final String previewImg;
   final String message;
+  final String? previewImg;
 
   const Message({
     required this.createdAt,
     required this.type,
     required this.title,
     required this.preview,
-    required this.previewImg,
     required this.message,
+    this.previewImg,
   });
 
   // Keep named constructor to allow user to construct using json map

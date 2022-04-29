@@ -125,52 +125,82 @@ class MessagePreview extends StatelessWidget {
               builder: (context) => BasicWebView(message: message))),
 
       child: Card(
-        child: Row(
-          children: [
-            Image(
-              image: NetworkImage(message.previewImg),
-              loadingBuilder: (context, child, loadingProgress) =>
-                  loadingProgress == null
-                      ? child
-                      : const CircularProgressIndicator(),
-              fit: BoxFit.fitWidth,
-              // Picture can only take up 30% of screen width
-              width: MediaQuery.of(context).size.width * 0.3,
-            ),
+        child: message.previewImg == null
+            ?
+            // Card without a previewImg shown
+            Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(message.title,
+                        style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            overflow: overflow)),
+                    Text(message.preview,
+                        style: const TextStyle(overflow: overflow)),
 
-            // Text beside the image
-            SizedBox(
-                // The rest of the words should only take up 60% of screen width
-                // Calculated by (Row - 0.3) - someForPadding
-                width: MediaQuery.of(context).size.width * 0.6,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(message.title,
-                          style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              overflow: overflow)),
-                      Text(message.preview,
-                          style: const TextStyle(overflow: overflow)),
+                    // Spacing
+                    const Divider(),
 
-                      // Spacing
-                      const Divider(),
-
-                      // Show the date when the message was created
-                      Text(
-                        DateFormat('E, MMMM d, y').format(
-                            DateTime.fromMillisecondsSinceEpoch(
-                                message.createdAt * 1000)),
-                        style: const TextStyle(color: Colors.grey),
-                      ),
-                    ],
-                  ),
+                    // Show the date when the message was created
+                    Text(
+                      DateFormat('E, MMMM d, y').format(
+                          DateTime.fromMillisecondsSinceEpoch(
+                              message.createdAt * 1000)),
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                  ],
                 ))
-          ],
-        ),
+            :
+            // Card with a previewImg shown
+            Row(
+                children: [
+                  Image(
+                    image: NetworkImage(message.previewImg!),
+                    loadingBuilder: (context, child, loadingProgress) =>
+                        loadingProgress == null
+                            ? child
+                            : const CircularProgressIndicator(),
+                    fit: BoxFit.fitWidth,
+                    // Picture can only take up 30% of screen width
+                    width: MediaQuery.of(context).size.width * 0.3,
+                  ),
+
+                  // Text beside the image
+                  SizedBox(
+                      // The rest of the words should only take up 60% of screen width
+                      // Calculated by (Row - 0.3) - someForPadding
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(message.title,
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    overflow: overflow)),
+                            Text(message.preview,
+                                style: const TextStyle(overflow: overflow)),
+
+                            // Spacing
+                            const Divider(),
+
+                            // Show the date when the message was created
+                            Text(
+                              DateFormat('E, MMMM d, y').format(
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                      message.createdAt * 1000)),
+                              style: const TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      ))
+                ],
+              ),
       ),
     );
   }
@@ -195,14 +225,16 @@ class BigMessagePreview extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image(
-                  image: NetworkImage(message.previewImg),
-                  loadingBuilder: (context, child, loadingProgress) =>
-                      loadingProgress == null
-                          ? child
-                          : const CircularProgressIndicator(),
-                  fit: BoxFit.contain,
-                ),
+                message.previewImg == null
+                    ? const SizedBox.shrink()
+                    : Image(
+                        image: NetworkImage(message.previewImg!),
+                        loadingBuilder: (context, child, loadingProgress) =>
+                            loadingProgress == null
+                                ? child
+                                : const CircularProgressIndicator(),
+                        fit: BoxFit.contain,
+                      ),
 
                 // Spacing
                 const SizedBox(height: 14),
