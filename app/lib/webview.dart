@@ -16,15 +16,17 @@ class BasicWebView extends StatelessWidget {
         title: Text(message.title),
       ),
       body: WebView(
-          initialUrl: Uri.dataFromString(createHTML(message.message),
-                  mimeType: 'text/html', encoding: Encoding.getByName("utf-8"))
+          initialUrl: Uri.dataFromString(
+                  createHTML(Uri.decodeComponent(message.message)),
+                  mimeType: 'text/html',
+                  encoding: Encoding.getByName("utf-8"))
               .toString()));
 }
 
-// Utility function to inject message value into the HTML body and return the whole HTML
-String createHTML(final String uriEncodedMessage) {
-  final message = Uri.decodeComponent(uriEncodedMessage);
-  return """
+/// Utility function to inject message value into HTML body and return the whole HTML
+// This can be inlined explicitly, but just looks nicer when written this way :)
+// Alternatively, @pragma('vm:prefer-inline') can be used, but this is untested.
+String createHTML(final String message) => """
     <!DOCTYPE html>
     <html>
     <head>
@@ -47,4 +49,3 @@ String createHTML(final String uriEncodedMessage) {
     </body>
     </html>
     """;
-}
