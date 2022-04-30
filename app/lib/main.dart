@@ -9,8 +9,10 @@ import './webview.dart';
 
 void main() {
   final model = DataModel();
-  model.messages = [
-    const Message(
+  model.syncData();
+  model.messages = {
+    1: Message(
+      id: 1,
       createdAt: 123,
       type: "cm",
       title: "test title",
@@ -19,7 +21,8 @@ void main() {
           "https://www.english-efl.com/wp-content/uploads/2019/12/test.jpg",
       message: "test message",
     ),
-    const Message(
+    2: Message(
+      id: 1,
       createdAt: 124,
       type: "cm",
       title: "test title 2",
@@ -28,7 +31,8 @@ void main() {
           "https://www.english-efl.com/wp-content/uploads/2019/12/test.jpg",
       message: "test message 2",
     ),
-    const Message(
+    3: Message(
+      id: 1,
       createdAt: 125,
       type:
           "a super super super super super super super super super long message type",
@@ -38,7 +42,8 @@ void main() {
           "https://www.english-efl.com/wp-content/uploads/2019/12/test.jpg",
       message: "test message 3",
     ),
-    Message.fromJsonString("""{
+    4: Message.fromJsonString("""{
+                                "id": 4,
                                 "createdAt": 200,
                                 "type": "cm",
                                 "title": "from json title",
@@ -46,7 +51,7 @@ void main() {
                                 "previewImg": "https://www.english-efl.com/wp-content/uploads/2019/12/test.jpg",
                                 "message": "from json message"
                               }"""),
-  ];
+  };
 
   runApp(
     // Provide the model to all widgets within the app. We're using
