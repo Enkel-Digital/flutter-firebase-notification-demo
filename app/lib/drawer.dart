@@ -106,7 +106,22 @@ class HomeDrawer extends StatelessWidget {
                 title: Text('Last Sync:\n${dataModel.lastSyncTimeString}'),
               ),
 
-              // @todo Show feedback link here
+              Link(
+                target: LinkTarget.self,
+                uri: Uri.parse("https://www.google.com"), // @todo
+                builder: (context, followLink) => ListTile(
+                  leading: const Icon(Icons.feedback),
+                  title: const Text('Feedback Form'),
+                  onTap: () {
+                    // Close the drawer
+                    Navigator.pop(context);
+
+                    // Open link with in app webview
+                    // Null check added as the type suggests `followLink` might be null
+                    if (followLink != null) followLink();
+                  },
+                ),
+              ),
 
               const ListTile(
                 leading: Icon(Icons.app_settings_alt),
