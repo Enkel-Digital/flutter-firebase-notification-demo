@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/link.dart';
 
 import './data.dart';
 import './settings.dart';
@@ -35,7 +36,7 @@ class HomeDrawer extends StatelessWidget {
                 trailing: Text(dataModel.messages.length.toString()),
                 onTap: () {
                   // Update the state of the app.
-                  context.read<DataModel>().filterWith(null);
+                  dataModel.filterWith(null);
                   // Then close the drawer
                   Navigator.pop(context);
                 },
@@ -61,7 +62,7 @@ class HomeDrawer extends StatelessWidget {
                     trailing: Text(entry.value.toString()),
                     onTap: () {
                       // Update the state of the app.
-                      context.read<DataModel>().filterWith(entry.key);
+                      dataModel.filterWith(entry.key);
                       // Then close the drawer
                       Navigator.pop(context);
                     }),
@@ -75,7 +76,7 @@ class HomeDrawer extends StatelessWidget {
               //         trailing: Text(entry.value.toString()),
               //         onTap: () {
               //           // Update the state of the app.
-              //           context.read<DataModel>().filterWith(entry.key);
+              //           dataModel.filterWith(entry.key);
               //           // Then close the drawer
               //           Navigator.pop(context);
               //         }))
