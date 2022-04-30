@@ -98,7 +98,7 @@ class HomeDrawer extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SettingsWidget()));
+                          builder: (context) => const SettingsWidget()));
                 },
               ),
 
