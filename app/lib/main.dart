@@ -239,6 +239,13 @@ class BigMessagePreview extends StatelessWidget {
                                 ? child
                                 : const CircularProgressIndicator(),
                         fit: BoxFit.contain,
+
+                        // @todo Use a max-height or smth to limit height to 50%
+                        // of screen or less. However if that happens, then there
+                        // will be empty bars at the side of the image due to the
+                        // `BoxFit.contain`. Alternatively, advice users to only
+                        // upload pictures of an appropriate height?
+                        // height: MediaQuery.of(context).size.height,
                       ),
 
                 // Spacing
@@ -272,6 +279,7 @@ class BigMessagePreview extends StatelessWidget {
       );
 }
 
+/// Home scree page widget that shows all the Message previews.
 /// This widget maps a list of messages to a ListView of Message Preview widgets,
 /// which can be of type `MessagePreview` or `BigMessagePreview`
 class ListOfMsgs extends StatelessWidget {
@@ -279,6 +287,7 @@ class ListOfMsgs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Consumer<DataModel>(
+        // ListView.seperated only builds the item and separator when visible
         builder: (context, dataModel, child) => ListView.separated(
           padding: const EdgeInsets.all(10),
           itemCount: dataModel.msgs.length,

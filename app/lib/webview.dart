@@ -49,6 +49,31 @@ class FAB extends StatelessWidget {
                 onPressed: () => dataModel.likeMessage(message.id),
               ),
             ),
+
+            // Alternative like button that can show number of likes
+            /* SizedBox.fromSize(
+                size: const Size(56, 56),
+                child: Material(
+                  shape: const CircleBorder(),
+                  child: GestureDetector(
+                    onTap: () => dataModel.likeMessage(message.id),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        dataModel.messages[message.id]!.liked == true
+                            ? const Icon(Icons.favorite, color: Colors.red)
+                            : const Icon(Icons.favorite_border),
+
+                        // Fake data, might not use this at all as not sure if client
+                        // should get any info on number of likes as this might be
+                        // more work/data for system to handle...
+                        Text(
+                            "${dataModel.messages[message.id]!.liked == true ? 285 : 284}"),
+                      ],
+                    ),
+                  ),
+                ),
+              ), */
           ],
         ),
       );
