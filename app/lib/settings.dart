@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import './utils/placeholder.dart';
+
 // import './data.dart';
 
 class Settings {
@@ -21,7 +23,7 @@ class SettingsWidget extends StatelessWidget {
         body: Center(
           child: Column(
             children: const [
-              Text("Settings"),
+              Expanded(child: CustomPlaceholder()),
 
               // @todo Add: Check for update and ask user to update if outdated
             ],
