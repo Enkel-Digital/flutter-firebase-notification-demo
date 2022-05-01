@@ -2,8 +2,53 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:provider/provider.dart';
 
 import './message.dart';
+import './data.dart';
+
+/// The Floating Action Buttons (like and comment) at the bottom of the screen.
+class FAB extends StatelessWidget {
+  final Message message;
+
+  const FAB({Key? key, required this.message}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Consumer<DataModel>(
+        builder: (context, dataModel, child) => Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            // Only show Comment FAB if it is not of this type
+            if (message.type != "__SPECIAL_MESSAGE_TYPE__")
+              Material(
+                shape: const CircleBorder(),
+                clipBehavior: Clip.antiAlias,
+                elevation: 4.0,
+                child: IconButton(
+                  icon: const Icon(Icons.comment),
+
+                  // ignore: avoid_print
+                  onPressed: () => print("Comments"),
+                ),
+              ),
+
+            const SizedBox(width: 14),
+
+            Material(
+              shape: const CircleBorder(),
+              clipBehavior: Clip.antiAlias,
+              elevation: 4.0,
+              child: IconButton(
+                icon: dataModel.messages[message.id]!.liked == true
+                    ? const Icon(Icons.favorite, color: Colors.red)
+                    : const Icon(Icons.favorite_border),
+                onPressed: () => dataModel.likeMessage(message.id),
+              ),
+            ),
+          ],
+        ),
+      );
+}
 
 class BasicWebView extends StatelessWidget {
   final Message message;
@@ -12,15 +57,17 @@ class BasicWebView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: Text(message.title),
-      ),
-      body: WebView(
-          initialUrl: Uri.dataFromString(
-                  createHTML(Uri.decodeComponent(message.message)),
-                  mimeType: 'text/html',
-                  encoding: Encoding.getByName("utf-8"))
-              .toString()));
+        appBar: AppBar(
+          title: Text(message.title),
+        ),
+        body: WebView(
+            initialUrl: Uri.dataFromString(
+                    createHTML(Uri.decodeComponent(message.message)),
+                    mimeType: 'text/html',
+                    encoding: Encoding.getByName("utf-8"))
+                .toString()),
+        floatingActionButton: FAB(message: message),
+      );
 }
 
 /// Utility function to inject message value into HTML body and return the whole HTML
