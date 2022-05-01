@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import './message.dart';
 import './data.dart';
+import './comments.dart';
 
 /// The Floating Action Buttons (like and comment) at the bottom of the screen.
 class FAB extends StatelessWidget {
@@ -27,8 +28,11 @@ class FAB extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(Icons.comment),
 
-                  // ignore: avoid_print
-                  onPressed: () => print("Comments"),
+                  // @todo Try showing on stack instead of going to a new page
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CommentSection())),
                 ),
               ),
 
