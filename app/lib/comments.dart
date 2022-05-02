@@ -56,6 +56,7 @@ class _CommentSectionState extends State<CommentSection> {
     // once complete, widget cosing disposes of all the loaded comments too
 
     return Scaffold(
+      appBar: AppBar(title: const Text("Comments")),
       body: Column(
         children: [
           // Expanded widget to show the messages so that it will take up as much
@@ -129,7 +130,9 @@ class TextInput extends StatelessWidget {
     return TextField(
       controller: controller,
 
-      autofocus: true,
+      // Not very intuitive as user might just want to see the messages first
+      //instead of commenting immediately, and this makes the UI jumpy.
+      // autofocus: true,
 
       decoration: const InputDecoration(
           contentPadding: EdgeInsets.all(14),
