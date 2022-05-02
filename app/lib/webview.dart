@@ -112,9 +112,10 @@ class BasicWebView extends StatelessWidget {
         // br elements the same way.
         //
         // Solution 3:
-        // Add something like <div style="min-height: 48px;"></div> to the bottom
-        // of the HTML template, as the default height of Icons is 48px, making it
+        // Add something like <div style="min-height: 56px;"></div> to the bottom
+        // of the HTML template, as the default height of Icons is 56px, making it
         // more accurate then the br element method.
+        // 56px as thats the height set for the icon button diameters.
         //
         // *Solution 3 is the one used right now!
         floatingActionButton: FAB(message: message),
@@ -146,7 +147,7 @@ String createHTML(final String message) => """
     <body>
         $message
 
-        <div style="min-height: 48px;"></div>
+        <div style="min-height: 56px;"></div>
     </body>
     </html>
     """;
