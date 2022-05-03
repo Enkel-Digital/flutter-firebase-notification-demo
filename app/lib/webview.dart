@@ -21,21 +21,62 @@ class FAB extends StatelessWidget {
           children: [
             // Only show Comment FAB if it is not of this type
             if (message.type != "__SPECIAL_MESSAGE_TYPE__")
-              Material(
-                shape: const CircleBorder(),
-                clipBehavior: Clip.antiAlias,
-                elevation: 8,
-                child: IconButton(
-                  icon: const Icon(Icons.comment),
+              // Using a SizedBox to ensure that the comment icon button has the
+              // same diameter as the like icon button beside it.
+              SizedBox(
+                height: 56,
+                width: 56,
+                child: Material(
+                  shape: const CircleBorder(),
+                  clipBehavior: Clip.antiAlias,
+                  elevation: 8,
+                  child: IconButton(
+                    icon: const Icon(Icons.comment),
 
-                  // @todo Try showing on stack instead of going to a new page
-                  onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const CommentSection())),
+                    // @todo Try showing on stack instead of going to a new page
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CommentSection())),
+                  ),
                 ),
               ),
 
+            const SizedBox(width: 14),
+
+            // Like button for this message
+            SizedBox.fromSize(
+              size: const Size(56, 56),
+              child: Material(
+                shape: const CircleBorder(),
+                // Note: Without elevation, it looks like IG Reels' like button
+                elevation: 8,
+                child: GestureDetector(
+                  onTap: () {
+                    // @todo Test if this works
+                    HapticFeedback.heavyImpact();
+                    dataModel.likeMessage(message.id);
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      dataModel.messages[message.id]!.liked == true
+                          ? const Icon(Icons.favorite, color: Colors.red)
+                          : const Icon(Icons.favorite_border),
+
+                      // @todo Remove fake data, might not use this at all as
+                      // not sure if client should get any info on number of likes
+                      // as this might be more work/data for system to handle...
+                      Text(
+                          "${dataModel.messages[message.id]!.liked == true ? 285 : 284}"),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            // Alternative like button without the number of likes
+            /*
             const SizedBox(width: 14),
 
             Material(
@@ -46,34 +87,14 @@ class FAB extends StatelessWidget {
                 icon: dataModel.messages[message.id]!.liked == true
                     ? const Icon(Icons.favorite, color: Colors.red)
                     : const Icon(Icons.favorite_border),
-                onPressed: () => dataModel.likeMessage(message.id),
+                // onPressed: () => dataModel.likeMessage(message.id),
+                onPressed: () {
+                  // @todo Test if this works
+                  HapticFeedback.heavyImpact();
+                  dataModel.likeMessage(message.id);
+                },
               ),
-            ),
-
-            // Alternative like button that can show number of likes
-            /* SizedBox.fromSize(
-                size: const Size(56, 56),
-                child: Material(
-                  shape: const CircleBorder(),
-                  child: GestureDetector(
-                    onTap: () => dataModel.likeMessage(message.id),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        dataModel.messages[message.id]!.liked == true
-                            ? const Icon(Icons.favorite, color: Colors.red)
-                            : const Icon(Icons.favorite_border),
-
-                        // Fake data, might not use this at all as not sure if client
-                        // should get any info on number of likes as this might be
-                        // more work/data for system to handle...
-                        Text(
-                            "${dataModel.messages[message.id]!.liked == true ? 285 : 284}"),
-                      ],
-                    ),
-                  ),
-                ),
-              ), */
+            ), */
           ],
         ),
       );
